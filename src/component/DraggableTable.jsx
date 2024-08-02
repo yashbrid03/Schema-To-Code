@@ -22,7 +22,7 @@ export default function DraggableTable({tableName}) {
       <TableData data={fields} />
       <FieldAddmodal isOpen={isModalOpen} onClose={closeModal} onSubmit={addFields} />
       <button onClick={openModal}>Add Field</button>
-      </div>
+      </div> 
     </Draggable>
   )
 }
