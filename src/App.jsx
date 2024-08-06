@@ -19,8 +19,8 @@ function App() {
   const closeModal = () => setIsModalOpen(false);
   
   useEffect(()=>{
-    console.log(nodes)
-  },[nodes])
+    console.log(edges)
+  },[edges])
 
 
   const yPos = useRef(0);
@@ -30,7 +30,7 @@ function App() {
       return [
         ...nodes,
         {
-          id: Math.random().toString(),
+          id: tableName,
           type:'customNode',
           position: { x: 100, y: yPos.current },
           data: { label: tableName }
