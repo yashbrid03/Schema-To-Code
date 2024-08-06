@@ -1,5 +1,12 @@
 import React from 'react';
 
+const truncateString = (str, num) => {
+    if (str.length <= num) {
+      return str;
+    }
+    return str.slice(0, num) + '...';
+  };
+
 const TableData = ({ data, onDelete, onEdit }) => {
   return (
     <div className=' rounded-md mt-2'>
@@ -15,7 +22,7 @@ const TableData = ({ data, onDelete, onEdit }) => {
       <tbody>
         {Object.entries(data).map(([key, value]) => (
           <tr key={key}  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-            <td scope="row" class="px-3 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{key}</td>
+            <td scope="row" class="px-3 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{truncateString(key, 10)}</td>
             <td  class="px-3 py-3">{value}</td>
             <td>
               <button onClick={() => onEdit(key, value)} className='text-blue-700 px-3 py-3'>Edit</button>

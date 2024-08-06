@@ -81,11 +81,13 @@ function App() {
     nodeTypes={custom}>
       <Background />
       <TableModal isOpen={isModalOpen} onClose={closeModal} onSubmit={addNode} />
-      <Controls>
-        <ControlButton onClick={() => openModal()}>
-          <div>Add table</div>
-        </ControlButton>
-      </Controls>
+      <Controls/>
+      <div class="group z-10   fixed  right-10 bottom-10 ">
+      <button data-tooltip-target="tooltip" data-tooltip-style="light" onClick={() => openModal()} className=' bg-blue-500 font-bold px-3 py-3 rounded-full text-white z-20'> Add</button>
+      <span className="z-20 absolute bottom-14 w-20 text-center right-0 scale-0 rounded bg-gray-200 p-2 text-xs text-black group-hover:scale-100">Add Table</span>
+      </div>
+      
+      
     </ReactFlow>
     </div>
     </>
