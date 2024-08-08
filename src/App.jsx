@@ -26,6 +26,7 @@ function App() {
   const edgesState = useSelector((state) => state.data["relation"]);
   const data = useSelector((state) => state.data);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [code,setCode] = useState(null);
 
   const [nodes, setNodes] = useState([]);
   const [edges, setEdges] = useState([]);
@@ -43,9 +44,9 @@ function App() {
   }, [edgesState, nodesState]);
 
   const callAi = async () => {
-    const url =
-      "https://api.edenai.run/v2/workflow/49a72acd-97d8-4d79-8e17-b90534775b4f/execution/";
+    const url ="https://api.edenai.run/v2/workflow/49a72acd-97d8-4d79-8e17-b90534775b4f/execution/";
     console.log("hello : " + JSON.stringify(data));
+    console.log(import.meta.env.VITE_API_TOKEN)
     const payload = { Json: JSON.stringify(data) };
 
     try {
@@ -53,7 +54,7 @@ function App() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer ${process.env.REACT_APP_API_TOKEN}",
+          Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
         },
         body: JSON.stringify(payload),
       });
@@ -72,7 +73,7 @@ function App() {
       const response2 = await fetch(url2, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer ${process.env.REACT_APP_API_TOKEN}",
+          Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
         },
       });
 
@@ -81,6 +82,7 @@ function App() {
         console("Network response2 was not ok");
       }
       console.log(finalresult.content.results.output.results[0].generated_text);
+      setCode(finalresult.content.results.output.results[0].generated_text)
     } catch (err) {
       console.log(err.message);
     }
@@ -207,6 +209,12 @@ function App() {
             </button>
           </div>
         </ReactFlow>
+      </div>
+      <div style={{ height: "100vh" }}>
+        {
+          code ? <div>{code}</div>:<div>no code generated</div>
+        }
+
       </div>
     </>
   );
