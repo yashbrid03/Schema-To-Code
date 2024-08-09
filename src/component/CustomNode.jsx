@@ -7,6 +7,9 @@ import { setFieldState} from "../store/tablesSlice"
 import { useDispatch } from "react-redux";
 
 export const CustomNode = ({ data }) => {
+  
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
   const [fields, setFields] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editKey, setEditKey] = useState(null);
@@ -14,27 +17,20 @@ export const CustomNode = ({ data }) => {
     key: "",
     value: "",
   });
+  
   const dispatch = useDispatch();
 
   useEffect(()=>{
     dispatch(setFieldState({tableName: data.label, fieldData:fields}))
   },[fields])
   
-  // useEffect(()=>{
-  //   console.log(fields)
-  // },[dispatch])
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
-
   const addFields = (field) => {
     setFields((prevData) => ({ ...prevData, ...field }));
-    // dispatch(addField({ tableName: data.label, fieldName: Object.keys(field)[0], fieldData: Object.values(field)[0] }));
   };
 
   const deleteField = (key) => {
     const { [key]: _, ...rest } = fields;
     setFields(rest);
-    // dispatch(removeField({tableName:data.label, fieldName:key}))
   };
 
   const editField = (key, value) => {
@@ -46,7 +42,6 @@ export const CustomNode = ({ data }) => {
   const updateField = (field) => {
     const { [editKey]: _, ...rest } = fields;
     setFields({ ...rest, ...field });
-    // dispatch(updateFieldState({ tableName: data.label, fieldName: Object.keys(field)[0], fieldData: Object.values(field)[0] }));
     setEditKey(null);
   };
 

@@ -6,7 +6,6 @@ const TableModal = ({ isOpen, onClose, onSubmit }) => {
   if (!isOpen) return null;
 
   const handleSubmit = (e) => {
-    // e.preventDefault();
     onSubmit(tableName);
     onClose();
   };
