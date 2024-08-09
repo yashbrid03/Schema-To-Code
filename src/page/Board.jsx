@@ -5,6 +5,7 @@ import {
     Background,
     applyNodeChanges,
     applyEdgeChanges,
+    Panel,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import TableModal from "../component/TableModal";
@@ -17,6 +18,7 @@ import {
     addRelation,
     removeRelation,
   } from "../store/tablesSlice";
+import { IconCopy, IconDownload } from "@tabler/icons-react";
   
 const custom = { customNode: CustomNode };
 
@@ -26,10 +28,11 @@ const Board = () => {
     const edgesState = useSelector((state) => state.data["relation"]);
     const data = useSelector((state) => state.data);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [code,setCode] = useState(null);
+    const [code,setCode] = useState("Click on code button to generate SQL code for your diagram");
   
     const [nodes, setNodes] = useState([]);
     const [edges, setEdges] = useState([]);
+    const [heading,setHeading] = useState("Click on code button to generate SQL code for your diagram")
   
     const openModal = () => {
       setIsModalOpen(true);
@@ -37,19 +40,47 @@ const Board = () => {
     const closeModal = () => setIsModalOpen(false);
   
     useEffect(() => {
-      console.log("edges : ");
-      console.log(edgesState);
-      console.log("nodes : ");
-      console.log(nodesState);
-    }, [edgesState, nodesState]);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, []);
+
+    const scrollToTop = ()=>{
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    const scrollToCode = ()=>{
+        window.scrollTo({ top: 1000, behavior: 'smooth' });
+    }
+
+    const handleDownload = () => {
+        const element = document.createElement("a");
+        const file = new Blob([code], { type: "text/sql" });
+        element.href = URL.createObjectURL(file);
+        element.download = "schema.sql";
+        document.body.appendChild(element); // Required for this to work in FireFox
+        element.click();
+      };
+
+      const handleCopy = () => {
+        navigator.clipboard.writeText(code)
+          .then(() => {
+            alert('Text copied to clipboard!');
+          })
+          .catch(err => {
+            console.error('Failed to copy text: ', err);
+          });
+      };
   
     const callAi = async () => {
+
+        scrollToCode();
+        setCode("Your Code is being generated ✨")
       const url ="https://api.edenai.run/v2/workflow/49a72acd-97d8-4d79-8e17-b90534775b4f/execution/";
       console.log("hello : " + JSON.stringify(data));
       console.log(import.meta.env.VITE_API_TOKEN)
       const payload = { Json: JSON.stringify(data) };
   
       try {
+        
         const response = await fetch(url, {
           method: "POST",
           headers: {
@@ -67,7 +98,10 @@ const Board = () => {
         const execution_id = result.id;
         console.log(result);
   
-        await new Promise((resolve) => setTimeout(resolve, 10000));
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+        setCode("Hold on for a second! ✨")
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+        
   
         const url2 = `https://api.edenai.run/v2/workflow/49a72acd-97d8-4d79-8e17-b90534775b4f/execution/${execution_id}/`;
         const response2 = await fetch(url2, {
@@ -161,10 +195,10 @@ const Board = () => {
   
     const onConnect = useCallback((params) => addEdge(params), [addEdge]);
   
-    useEffect(() => {
-      console.log("hello");
-      console.log(JSON.stringify(data));
-    }, [data]);
+    // useEffect(() => {
+    //   console.log("hello");
+    //   console.log(JSON.stringify(data));
+    // }, [data]);
   
   
   
@@ -189,7 +223,25 @@ const Board = () => {
               onSubmit={addNode}
             />
             <Controls />
-            <div className="group z-10   fixed  right-10 bottom-10 ">
+            <Panel position="bottom-right">
+            <button
+                data-tooltip-target="tooltip"
+                data-tooltip-style="light"
+                onClick={() => openModal()}
+                className=" dark:bg-slate-700  px-5 py-2 mr-3 rounded-full dark:text-white text-sm z-20"
+              >
+                Add Table
+              </button>
+              <button
+                onClick={() => callAi()}
+                className=" dark:bg-cyan-700 px-5 py-2 rounded-full dark:text-white text-sm z-20"
+              >
+                Code
+              </button>
+              
+
+            </Panel>
+            {/* <div className="group z-10   fixed  right-10 bottom-10 ">
               <button
                 data-tooltip-target="tooltip"
                 data-tooltip-style="light"
@@ -210,13 +262,29 @@ const Board = () => {
               >
                 Code
               </button>
-            </div>
+            </div> */}
           </ReactFlow>
         </div>
-        <div style={{ height: "100vh" }}>
-          {
+        <div style={{ height: "100vh" }} className="dark:bg-stone-900 bg-white pt-10 dark:text-slate-200 px-20">
+            <div className="text-xl md:text-4xl font-bold dark:text-white text-center  ">
+                Your MySQL code :
+            </div>
+            <div className="dark:bg-stone-950 rounded-lg mt-5 p-10 relative">
+                {code}
+                <div onClick={handleCopy} className="absolute top-4 right-5 bg-stone-800 rounded-md p-2 cursor-pointer">
+                <IconCopy ></IconCopy>
+                
+                </div>
+                <div onClick={handleDownload} className="absolute top-4 right-20 bg-stone-800 rounded-md p-2 cursor-pointer">
+                <IconDownload />
+                
+                </div>
+                
+                <button >Download</button>
+            </div>
+          {/* {
             code ? <div>{code}</div>:<div>no code generated</div>
-          }
+          } */}
   
         </div>
       </>

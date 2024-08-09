@@ -4,9 +4,13 @@ import React from "react";
 import { AuroraBackground } from "../component/aurora-background";
 import { ContainerScroll } from "../component/container-scroll-animation";
 import image from '../assets/image.png'
+import { useEffect } from "react";
 
 
 export const Home = () => {
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, []);
   return (
     <AuroraBackground className="bg-sla0">
       <motion.div

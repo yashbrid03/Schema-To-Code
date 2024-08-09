@@ -8,6 +8,7 @@ import {
 } from "framer-motion";
 import { cn } from "../lib/utils";
 import {Link} from "react-router-dom";
+import { Button } from "./moving-border";
 
 export const FloatingNav = ({
   navItems,
@@ -39,12 +40,12 @@ export const FloatingNav = ({
     <AnimatePresence mode="wait">
       <motion.div
         initial={{
-          opacity: 0,
-          y: 0,
+          opacity: 1,
+          y: -100,
         }}
         animate={{
           y:  0,
-          opacity: visible ? 1 : 0,
+          opacity: visible ? 1 : 0.5,
         }}
         transition={{
           duration: 0.2,
@@ -66,10 +67,10 @@ export const FloatingNav = ({
             <span className="hidden sm:block text-sm">{navItem.name}</span>
           </Link>
         ))}
-        <button className="border text-sm font-medium relative border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full">
-          <span>Login</span>
-          <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-blue-500 to-transparent  h-px" />
-        </button>
+        <Button borderRadius="1.75rem" className="border text-sm font-medium relative border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full">
+        Login
+        </Button>
+        
       </motion.div>
     </AnimatePresence>
   );
