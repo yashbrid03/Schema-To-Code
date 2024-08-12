@@ -56,7 +56,6 @@ export const Home = () => {
         </motion.div>
       </AuroraBackground>
 
-      
       <FeatureSection />
     </div>
   );

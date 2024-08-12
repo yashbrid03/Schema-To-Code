@@ -4,10 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useMotionTemplate, motion } from "framer-motion";
 import { cn } from "../lib/utils";
 
-export const EvervaultCard = ({
-  text,
-  className,
-}) => {
+export const EvervaultCard = ({ text, className }) => {
   let mouseX = useMotionValue(0);
   let mouseY = useMotionValue(0);
 

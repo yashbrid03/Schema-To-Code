@@ -7,13 +7,10 @@ import {
   useMotionValueEvent,
 } from "framer-motion";
 import { cn } from "../lib/utils";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "./moving-border";
 
-export const FloatingNav = ({
-  navItems,
-  className,
-}) => {
+export const FloatingNav = ({ navItems, className }) => {
   const { scrollYProgress } = useScroll();
 
   const [visible, setVisible] = useState(true);
@@ -21,8 +18,8 @@ export const FloatingNav = ({
   useMotionValueEvent(scrollYProgress, "change", (current) => {
     // Check if current is not undefined and is a number
     if (typeof current === "number") {
-        const previous = scrollYProgress.getPrevious();
-        const direction = previous !== undefined ? current - previous : 0;
+      const previous = scrollYProgress.getPrevious();
+      const direction = previous !== undefined ? current - previous : 0;
 
       if (scrollYProgress.get() < 0.05) {
         setVisible(true);
@@ -44,7 +41,7 @@ export const FloatingNav = ({
           y: -100,
         }}
         animate={{
-          y:  0,
+          y: 0,
           opacity: visible ? 1 : 0.5,
         }}
         transition={{
@@ -56,21 +53,16 @@ export const FloatingNav = ({
         )}
       >
         {navItems.map((navItem, idx) => (
-          <Button borderRadius="1.75rem" className="border text-sm font-medium relative border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full">
-          <Link
-            key={`link=${idx}`}
-            to={navItem.link}
-            className={cn(
-              ""
-            )}
+          <Button
+            borderRadius="1.75rem"
+            className="border text-sm font-medium relative border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full"
           >
-            <span className="block sm:hidden">{navItem.icon}</span>
-            <span className="hidden sm:block text-sm">{navItem.name}</span>
-          </Link>
+            <Link key={`link=${idx}`} to={navItem.link} className={cn("")}>
+              <span className="block sm:hidden">{navItem.icon}</span>
+              <span className="hidden sm:block text-sm">{navItem.name}</span>
+            </Link>
           </Button>
         ))}
-        
-        
       </motion.div>
     </AnimatePresence>
   );

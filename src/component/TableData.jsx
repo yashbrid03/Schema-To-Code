@@ -19,16 +19,14 @@ const TableData = ({ data, onDelete, onEdit }) => {
             <th scope="col" class="px-3 py-3">
               DataType
             </th>
-            <th className="text-center" colSpan={2}>Actions</th>
-            
+            <th className="text-center" colSpan={2}>
+              Actions
+            </th>
           </tr>
         </thead>
         <tbody>
           {Object.entries(data).map(([key, value]) => (
-            <tr
-              key={key}
-              class="bg-transparent dark:border-gray-500"
-            >
+            <tr key={key} class="bg-transparent dark:border-gray-500">
               <td
                 scope="row"
                 class="px-3 py-3 font-medium text-gray-900 whitespace-nowrap "
