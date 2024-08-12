@@ -11,16 +11,16 @@ const TableModal = ({ isOpen, onClose, onSubmit }) => {
   };
 
   return (
-    <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white p-4 rounded">
+    <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center  bg-opacity-50 z-50">
+      <div className="dark:bg-[#bdbebf] p-4 rounded">
         {/* <h2>Enter Table Name</h2> */}
         <form onSubmit={handleSubmit} className="max-w-sm mx-auto">
-          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          <label className="block mb-2 text-sm font-medium dark:text-gray-900 text-white">
             Table Name
           </label>
 
           <input
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="bg-gray-50 border border-gray-300  text-sm rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-none block w-full p-2.5 dark:text-gray-900 dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 "
             type="text"
             value={tableName}
             onChange={(e) => setTableName(e.target.value)}

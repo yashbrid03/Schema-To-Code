@@ -43,17 +43,17 @@ const FieldModal = ({
   };
   return (
     <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-black  z-50   bg-gray-100 border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-      <div className="bg-white w-full p-4 rounded">
+      <div className="dark:bg-[#bdbebf] w-full p-4 rounded">
         <h2>
           {isEdit ? "Edit" : "Add"} Field in {tableName}
         </h2>
         <form class="max-w-sm mx-auto" onSubmit={handleSubmit}>
           <div>
-            <label className="block mb-1 text-sm font-medium text-gray-900 dark:text-white">
+            <label className="block mb-1 text-sm font-medium text-gray-900 text-black">
               Column
             </label>
             <input
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-4 focus:outline-none focus:ring-blue-300 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border border-gray-300  text-sm rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-none block w-full p-2.5 dark:text-gray-900 dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500"
               id="keyInput"
               type="text"
               value={key}
@@ -62,14 +62,14 @@ const FieldModal = ({
             />
           </div>
           <div className="mt-3">
-            <label className="block mb-1 text-sm font-medium text-gray-900 dark:text-white">
+            <label className="block mb-1 text-sm font-medium text-gray-900 text-black">
               DataType
             </label>
             <select
               id="valueInput"
               value={value}
               onChange={(e) => setValue(e.target.value)}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-4 focus:outline-none focus:ring-blue-300 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border border-gray-300  text-sm rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-none block w-full p-2.5 dark:text-gray-900 dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500"
               required
             >
               <option value="">Select Data Type</option>

@@ -46,7 +46,7 @@ export const CustomNode = ({ data }) => {
   };
 
   return (
-    <div className="block max-w-sm px-6 py-4 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 ">
+    <div className="block max-w-sm px-6 py-4 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-400 dark:border-gray-700 dark:hover:bg-gray-300 ">
       <Handle type="target" position={Position.Top} />
       <Handle type="source" position={Position.Bottom} id={data.label} />
       <FieldModal
@@ -63,7 +63,7 @@ export const CustomNode = ({ data }) => {
       <TableData data={fields} onDelete={deleteField} onEdit={editField} />
       <button
         onClick={openModal}
-        className="mt-3 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm px-3 py-2 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
+        className="mt-3 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm px-3 py-2 text-center me-2 mb-2 dark:border-blue-700 dark:text-blue-700 dark:hover:text-white dark:hover:bg-blue-700 dark:focus:ring-blue-800"
       >
         Add field
       </button>

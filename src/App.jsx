@@ -1,13 +1,12 @@
-import React from 'react'
-import Board from './page/Board';
-import { Home } from './page/Home';
+import React from "react";
+import Board from "./page/Board";
+import { Home } from "./page/Home";
 
 import { Routes, Route, Router } from "react-router-dom";
 import { FloatingNav } from "./component/floating-navbar";
 import { IconHome, IconCopy } from "@tabler/icons-react";
 
 function App() {
-  
   const navItems = [
     {
       name: "Home",
@@ -22,13 +21,14 @@ function App() {
   ];
 
   return (
-    <div className='dark'>
-      <FloatingNav navItems={navItems} />
-    <Routes>
-      <Route path='/' element={<Home/>}></Route>
-      <Route path='/designer' element={<Board/>}></Route>
-    </Routes>
-    
+    <div className="dark">
+      <div className="">
+        <FloatingNav navItems={navItems} />
+        <Routes>
+          <Route path="/" element={<Home />}></Route>
+          <Route path="/designer" element={<Board />}></Route>
+        </Routes>
+      </div>
     </div>
   );
 }

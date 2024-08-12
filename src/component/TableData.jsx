@@ -11,31 +11,31 @@ const TableData = ({ data, onDelete, onEdit }) => {
   return (
     <div className=" rounded-md mt-2">
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rounded-lg">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400 ">
+        <thead className="text-xs text-black uppercase  dark:text-black ">
           <tr>
-            <th scope="col" class="px-3 py-3">
+            <th scope="col" class="pr-6 py-3">
               Column
             </th>
             <th scope="col" class="px-3 py-3">
               DataType
             </th>
-            <th></th>
-            <th></th>
+            <th className="text-center" colSpan={2}>Actions</th>
+            
           </tr>
         </thead>
         <tbody>
           {Object.entries(data).map(([key, value]) => (
             <tr
               key={key}
-              class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+              class="bg-transparent dark:border-gray-500"
             >
               <td
                 scope="row"
-                class="px-3 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                class="px-3 py-3 font-medium text-gray-900 whitespace-nowrap "
               >
                 {truncateString(key, 10)}
               </td>
-              <td class="px-3 py-3">{value}</td>
+              <td class="px-3 py-3 text-gray-900">{value}</td>
               <td>
                 <button
                   onClick={() => onEdit(key, value)}

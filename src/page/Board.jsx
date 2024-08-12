@@ -19,8 +19,16 @@ import {
     removeRelation,
   } from "../store/tablesSlice";
 import { IconCopy, IconDownload } from "@tabler/icons-react";
+import { DownloadChart } from "../component/DownloadChart";
   
 const custom = { customNode: CustomNode };
+
+const formatSql = (sql) => {
+  // console.log(typeof sql)
+  const cleanedSql = sql.replace(/^```|```$/g, '');
+        
+};
+
 
 const Board = () => {
     const dispatch = useDispatch();
@@ -34,6 +42,8 @@ const Board = () => {
     const [edges, setEdges] = useState([]);
     const [heading,setHeading] = useState("Click on code button to generate SQL code for your diagram")
   
+    
+
     const openModal = () => {
       setIsModalOpen(true);
     };
@@ -115,8 +125,10 @@ const Board = () => {
         if (!response2.ok) {
           console("Network response2 was not ok");
         }
-        console.log(finalresult.content.results.output.results[0].generated_text);
-        setCode(finalresult.content.results.output.results[0].generated_text)
+
+        const cleanedSql = finalresult.content.results.output.results[0].generated_text
+        // console.log(finalresult.content.results.output.results[0].generated_text);
+        setCode(cleanedSql.replace(/^```|```$/g, ''))
       } catch (err) {
         console.log(err.message);
       }
@@ -199,6 +211,8 @@ const Board = () => {
     //   console.log("hello");
     //   console.log(JSON.stringify(data));
     // }, [data]);
+
+   
   
   
   
@@ -241,6 +255,7 @@ const Board = () => {
               
 
             </Panel>
+            <DownloadChart/>
             {/* <div className="group z-10   fixed  right-10 bottom-10 ">
               <button
                 data-tooltip-target="tooltip"
@@ -265,12 +280,12 @@ const Board = () => {
             </div> */}
           </ReactFlow>
         </div>
-        <div style={{ height: "100vh" }} className="dark:bg-stone-900 bg-white pt-10 dark:text-slate-200 px-20">
+        <div style={{ height: "100%" }} className="dark:bg-stone-900 bg-white py-10 dark:text-slate-200 px-20">
             <div className="text-xl md:text-4xl font-bold dark:text-white text-center  ">
                 Your MySQL code :
             </div>
             <div className="dark:bg-stone-950 rounded-lg mt-5 p-10 relative">
-                {code}
+                <pre><code>{code}</code></pre>
                 <div onClick={handleCopy} className="absolute top-4 right-5 bg-stone-800 rounded-md p-2 cursor-pointer">
                 <IconCopy ></IconCopy>
                 
@@ -280,7 +295,6 @@ const Board = () => {
                 
                 </div>
                 
-                <button >Download</button>
             </div>
           {/* {
             code ? <div>{code}</div>:<div>no code generated</div>
