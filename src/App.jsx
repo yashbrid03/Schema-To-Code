@@ -4,7 +4,7 @@ import { Home } from "./page/Home";
 
 import { Routes, Route, Router } from "react-router-dom";
 import { FloatingNav } from "./component/floating-navbar";
-import { IconHome, IconCopy } from "@tabler/icons-react";
+import { IconHome, IconCopy, IconTable } from "@tabler/icons-react";
 
 function App() {
   const navItems = [
@@ -16,7 +16,7 @@ function App() {
     {
       name: "Board",
       link: "/designer",
-      icon: <IconHome className="h-4 w-4 text-neutral-500 dark:text-white" />,
+      icon: <IconTable className="h-4 w-4 text-neutral-500 dark:text-white" />,
     },
   ];
 

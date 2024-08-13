@@ -34,15 +34,10 @@ const Board = () => {
   const edgesState = useSelector((state) => state.data["relation"]);
   const data = useSelector((state) => state.data);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [code, setCode] = useState(
-    "Click on code button to generate SQL code for your diagram"
-  );
+  const [code, setCode] = useState();
 
   const [nodes, setNodes] = useState([]);
   const [edges, setEdges] = useState([]);
-  const [heading, setHeading] = useState(
-    "Click on code button to generate SQL code for your diagram"
-  );
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -276,15 +271,19 @@ const Board = () => {
       </div>
       <div
         style={{ height: "100%" }}
-        className="dark:bg-stone-900 bg-white py-10 dark:text-slate-200 px-20"
+        className="dark:bg-stone-900 bg-white py-10 dark:text-slate-200 md:px-20 px-8"
       >
         <div className="text-xl md:text-4xl font-bold dark:text-white text-center  ">
           Your MySQL code :
         </div>
-        <div className="dark:bg-stone-950 rounded-lg mt-5 p-10 relative">
+        <div className="dark:bg-stone-950 rounded-lg mt-5 pt-14 md:p-10 p-5 relative">
+          {code ? <pre>
+            <code>{code}</code>
+          </pre> : <p>Click on code button to generate SQL code for your diagram</p>}
+          {/* <p>Click on code button to generate SQL code for your diagram</p>
           <pre>
             <code>{code}</code>
-          </pre>
+          </pre> */}
           <div
             onClick={handleCopy}
             className="absolute top-4 right-5 bg-stone-800 rounded-md p-2 cursor-pointer"
