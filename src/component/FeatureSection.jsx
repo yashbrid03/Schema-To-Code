@@ -3,7 +3,7 @@ import { EvervaultCard, Icon } from "./evervault-card";
 
 export const FeatureSection = () => {
   return (
-    <section className="text-gray-600 body-font -mt-2 ">
+    <section className="text-gray-600 body-font  ">
       <div className="text-2xl md:text-5xl font-bold dark:text-white text-center -mt-2 z-50 ">
         Our Features.
       </div>

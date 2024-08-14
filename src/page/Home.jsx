@@ -55,10 +55,11 @@ export const Home = () => {
               // object-cover
               className="mx-auto rounded-2xl object-cover h-full object-left-top"
             />
+            
           </ContainerScroll>
+          
         </motion.div>
       </AuroraBackground>
-
       <FeatureSection />
     </div>
   );
