@@ -5,7 +5,7 @@ export const FeatureSection = () => {
   return (
     <section className="text-gray-600 body-font -mt-2 ">
       <div className="text-2xl md:text-5xl font-bold dark:text-white text-center -mt-2 z-50 ">
-        Our Feature.
+        Our Features.
       </div>
       <div className="container px-2 py-20 mx-auto ">
         <div className="flex flex-wrap -m-4 items-center justify-center">
@@ -40,6 +40,9 @@ export const FeatureSection = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div className="text-xl md:text-2xl font-medium text-white text-center pb-5">
+        *More cool Features coming in V2*
       </div>
     </section>
   );

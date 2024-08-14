@@ -35,6 +35,9 @@ export const Home = () => {
           <ContainerScroll
             titleComponent={
               <>
+              <div className="text-xl md:text-3xl font-medium dark:text-white text-center ">
+                Welcome to Schema to Code
+              </div>
                 <div className="text-3xl md:text-7xl font-bold dark:text-white text-center ">
                   Build and Visualize Your Database Schema in Minutes.
                 </div>
