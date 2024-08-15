@@ -270,7 +270,7 @@ const Board = () => {
         </ReactFlow>
       </div>
       <div
-        style={{ height: "100%" }}
+        style={{ minHeight: "100vh" }}
         className="dark:bg-stone-900 bg-white py-10 dark:text-slate-200 md:px-20 px-8"
       >
         <div className="text-xl md:text-4xl font-bold dark:text-white text-center  ">

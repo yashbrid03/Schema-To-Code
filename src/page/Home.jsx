@@ -41,7 +41,7 @@ export const Home = () => {
                 <div className="text-3xl md:text-7xl font-bold dark:text-white text-center ">
                   Build and Visualize Your Database Schema in Minutes.
                 </div>
-                <div className="font-extralight text-base md:text-4xl dark:text-neutral-200 py-4 mb-10">
+                <div className="font-extralight text-base md:text-4xl dark:text-neutral-200 md:py-4 md:mb-10">
                   Design, Manage, and Export with Ease
                 </div>
               </>
