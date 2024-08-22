@@ -28,7 +28,7 @@ function App() {
   ];
 
   return (
-    <div className="dark">
+    <div className="dark bg-zinc-900">
       <div className="">
         <FloatingNav navItems={navItems} />
         <Routes>
