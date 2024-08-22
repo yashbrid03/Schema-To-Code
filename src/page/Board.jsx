@@ -6,7 +6,9 @@ import {
   applyNodeChanges,
   applyEdgeChanges,
   Panel,
+  
 } from "@xyflow/react";
+import { useReactFlow } from '@xyflow/react';
 import "@xyflow/react/dist/style.css";
 import TableModal from "../component/TableModal";
 import { useState, useCallback, useEffect, useRef } from "react";
@@ -17,9 +19,16 @@ import {
   removeTable,
   addRelation,
   removeRelation,
+  setFieldState,
 } from "../store/tablesSlice";
+import {addNodeToStore} from "../store/nodeSlice"
 import { IconCopy, IconDownload } from "@tabler/icons-react";
 import { DownloadChart } from "../component/DownloadChart";
+import { authentication,db } from "../firebase/config";
+import { useNavigate } from "react-router-dom";
+import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
+import { useLocation } from 'react-router-dom';
+import { removeNodeToStore } from "../store/nodeSlice";
 
 const custom = { customNode: CustomNode };
 
@@ -35,9 +44,145 @@ const Board = () => {
   const data = useSelector((state) => state.data);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [code, setCode] = useState();
-
+  const [boardName,setBoardName] = useState(null);
   const [nodes, setNodes] = useState([]);
   const [edges, setEdges] = useState([]);
+  const location = useLocation();
+  const navigate = useNavigate()
+  // const navigate = useNavigate();
+
+  const effectRan = useRef(false);
+  useEffect(() => {
+    if (effectRan.current) return;
+    // Check if the user navigated from the source page
+    if (!location.state || !location.state.fromSourcePage) {
+      // Redirect if they didn't
+      navigate('/');
+    }else{
+      setNodes(location.state.nodes)
+      setEdges(location.state.edges)
+      location.state.nodes.map((node)=>{
+        dispatch(addTable({ tableName:node.id }))
+        dispatch(addNodeToStore(node))
+      })
+
+      location.state.edges.map((edge)=>{
+        dispatch(addRelation({ source:edge.source, target:edge.target }));
+      })
+      console.log("first")
+      setBoardName(location.state.name)
+      effectRan.current = true;
+    }
+  }, );
+
+  // useEffect(()=>{
+  //   console.log(data)
+  // },[data])
+
+  const reactFlow = useReactFlow();
+  
+
+
+  useEffect(()=>{
+    console.log(reactFlow.getNodes())
+    console.log(data)
+  },[nodes,data])
+
+
+  // save board
+  const nodestodb = useSelector((state)=>state.node.nodes)
+  
+  useEffect(()=>{
+    console.log(nodestodb)
+  },[nodestodb])
+
+  useEffect(()=>{
+    console.log(nodestodb)
+  })
+  
+  // useEffect(()=>{
+  //   console.log(state)
+  // },[dispatch,state])
+
+  const SaveBoard = async()=>{
+    
+    const userRef = doc(db, "users", userget.uid);
+    const userDoc = await getDoc(userRef);
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+      let boards = userData.boards || [];
+  
+      // Find the index of the board with the given name
+      const boardIndex = boards.findIndex(board => board.name === boardName);
+  
+      if (boardIndex !== -1) {
+        // Update the content of the specific board
+
+        //update position
+        const list2 = reactFlow.getNodes();
+        const updatednodestodb = nodestodb.map(item1 =>{
+          const matchingItem2 = list2.find(item2 => item2.id === item1.id);
+          if (matchingItem2) {
+            return { ...item1, position: matchingItem2.position };
+          }
+          return item1;
+        })
+        console.log(updatednodestodb)
+        boards[boardIndex] = {
+          name:boardName,
+          nodes:updatednodestodb,
+          edges : reactFlow.getEdges()
+           // Spread new content properties to update the board
+        };
+  
+        // Save the updated boards array back to Firestore
+        await updateDoc(userRef, { boards });
+  
+        alert("Board content updated successfully.");
+      } else {
+        alert("Board not found.");
+      }
+    } else {
+      alert("User not found.");
+    }
+  }
+
+  // save board end
+  
+
+  // auth
+
+  const [userget,setUser] = useState(null)
+  const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const unsubscribe = authentication.onAuthStateChanged(async (currentUser) => {
+            if (currentUser) {
+              setUser(currentUser);
+              console.log(currentUser)
+              setLoading(false); 
+      
+            } else {
+              setUser(null);
+              setLoading(false); 
+            }
+          });
+      
+          return () => unsubscribe();
+    }, []);
+
+    
+    useEffect(() => {
+        if(!loading && userget === null){
+            alert("you must me logged in")
+            navigate('/')
+        }
+        if(!loading && userget){
+            console.log(userget.uid);
+        }
+    },[userget, loading])
+
+  // auth end
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -48,9 +193,9 @@ const Board = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  // const scrollToTop = () => {
+  //   window.scrollTo({ top: 0, behavior: "smooth" });
+  // };
 
   const scrollToCode = () => {
     window.scrollTo({ top: 1000, behavior: "smooth" });
@@ -129,19 +274,29 @@ const Board = () => {
     }
   };
 
+  
+
+  
+
   const yPos = useRef(0);
   const addNode = useCallback(
     (tableName) => {
       yPos.current += 80;
       setNodes((nodes) => {
         dispatch(addTable({ tableName }));
+        dispatch(addNodeToStore({
+          id: tableName,
+          type: "customNode",
+          position: { x: 100, y: yPos.current },
+          data: { label: tableName, fields:{} },
+        }));
         return [
           ...nodes,
           {
             id: tableName,
             type: "customNode",
             position: { x: 100, y: yPos.current },
-            data: { label: tableName },
+            data: { label: tableName, fields:{} },
           },
         ];
       });
@@ -155,6 +310,7 @@ const Board = () => {
       console.log(currnode[0].id);
       setNodes((nodes) => nodes.filter((node) => node.id !== currnode[0].id));
       dispatch(removeTable(currnode[0].id));
+      dispatch(removeNodeToStore(currnode[0].id))
     },
     [dispatch]
   );
@@ -202,10 +358,6 @@ const Board = () => {
 
   const onConnect = useCallback((params) => addEdge(params), [addEdge]);
 
-  // useEffect(() => {
-  //   console.log("hello");
-  //   console.log(JSON.stringify(data));
-  // }, [data]);
 
   return (
     <>
@@ -228,6 +380,11 @@ const Board = () => {
             onSubmit={addNode}
           />
           <Controls />
+          <Panel position="top-left">
+            <button onClick={()=>SaveBoard()}>
+              save
+            </button>
+          </Panel>
           <Panel position="bottom-right">
             <button
               data-tooltip-target="tooltip"

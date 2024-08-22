@@ -5,11 +5,12 @@ import TableData from "./TableData";
 import { Handle, Position } from "@xyflow/react";
 import { setFieldState } from "../store/tablesSlice";
 import { useDispatch } from "react-redux";
+import { addFieldToStore } from "../store/nodeSlice";
 
 export const CustomNode = ({ data }) => {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-  const [fields, setFields] = useState({});
+  const [fields, setFields] = useState(data.fields);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editKey, setEditKey] = useState(null);
   const [initialFieldData, setInitialFieldData] = useState({
@@ -19,8 +20,12 @@ export const CustomNode = ({ data }) => {
 
   const dispatch = useDispatch();
 
+  
+
   useEffect(() => {
+    console.log("inside")
     dispatch(setFieldState({ tableName: data.label, fieldData: fields }));
+    dispatch(addFieldToStore({ tableName: data.label, fieldData: fields }));
   }, [fields]);
 
   const addFields = (field) => {

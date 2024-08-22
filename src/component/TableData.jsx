@@ -13,10 +13,10 @@ const TableData = ({ data, onDelete, onEdit }) => {
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rounded-lg">
         <thead className="text-xs text-black uppercase  dark:text-black ">
           <tr>
-            <th scope="col" class="pr-6 py-3">
+            <th scope="col" className="pr-6 py-3">
               Column
             </th>
-            <th scope="col" class="px-3 py-3">
+            <th scope="col" className="px-3 py-3">
               DataType
             </th>
             <th className="text-center" colSpan={2}>
@@ -26,14 +26,14 @@ const TableData = ({ data, onDelete, onEdit }) => {
         </thead>
         <tbody>
           {Object.entries(data).map(([key, value]) => (
-            <tr key={key} class="bg-transparent dark:border-gray-500">
+            <tr key={key} className="bg-transparent dark:border-gray-500">
               <td
                 scope="row"
-                class="px-3 py-3 font-medium text-gray-900 whitespace-nowrap "
+                className="px-3 py-3 font-medium text-gray-900 whitespace-nowrap "
               >
                 {truncateString(key, 10)}
               </td>
-              <td class="px-3 py-3 text-gray-900">{value}</td>
+              <td className="px-3 py-3 text-gray-900">{value}</td>
               <td>
                 <button
                   onClick={() => onEdit(key, value)}

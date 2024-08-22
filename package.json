@@ -19,6 +19,7 @@
     "@xyflow/react": "^12.0.4",
     "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
+    "firebase": "^10.13.0",
     "framer-motion": "^11.3.24",
     "html-to-image": "^1.11.11",
     "react": "^18.3.1",
