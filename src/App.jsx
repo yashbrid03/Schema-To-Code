@@ -6,7 +6,6 @@ import { Routes, Route, Router } from "react-router-dom";
 import { FloatingNav } from "./component/floating-navbar";
 import { IconHome, IconCopy, IconTable, IconCode } from "@tabler/icons-react";
 import { Query } from "./page/Query";
-import { Login } from "./page/Login";
 import { Dashboard } from "./page/Dashboard";
 
 function App() {
@@ -36,7 +35,6 @@ function App() {
           <Route path="/" element={<Home />}></Route>
           <Route path="/designer" element={<ReactFlowProvider><Board /></ReactFlowProvider>}></Route>
           <Route path="/query" element={<Query/>}/>
-          <Route path="/login" element={<Login/>}/>
           <Route path="/boards" element={<Dashboard/>}/>
         </Routes>
       </div>

@@ -11,8 +11,89 @@ import { Link } from "react-router-dom";
 import { Button } from "./moving-border";
 import { IconBrandGithub } from "@tabler/icons-react";
 import { IconBrandLinkedin } from "@tabler/icons-react";
+import { authentication, db } from "../firebase/config";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import {  doc, setDoc, getDoc } from "firebase/firestore";
 
 export const FloatingNav = ({ navItems, className }) => {
+
+  const [userget,setUser] = useState(null)
+  const [loading, setLoading] = useState(true);
+  const [showLogin,setShowLogin] = useState(false)
+  const navigate = useNavigate();
+
+    useEffect(() => {
+        const unsubscribe = authentication.onAuthStateChanged(async (currentUser) => {
+            if (currentUser) {
+              setUser(currentUser);
+              setShowLogin(false)
+              console.log(currentUser)
+              setLoading(false); 
+      
+            } else {
+              setShowLogin(true)
+              setUser(null);
+              setLoading(false); 
+            }
+          });
+      
+          return () => unsubscribe();
+    }, []);
+
+  // auth end
+    
+    //login logout
+
+    const checkAndCreateUID = async (uid, name) => {
+      const docRef = doc(db, "users", uid);
+  
+      // Check if the document exists
+      const docSnap = await getDoc(docRef);
+  
+      if (!docSnap.exists()) {
+        // If the document does not exist, create it with the desired field
+        await setDoc(docRef, {
+          type: "free",
+          name: name,
+        });
+        console.log(`Document with UID ${uid} created.`);
+      } else {
+        console.log(`Document with UID ${uid} already exists.`);
+      }
+    };
+  
+    const handleGoogleSignIn = () => {
+      const provider = new GoogleAuthProvider();
+      signInWithPopup(authentication, provider)
+        .then((result) => {
+          const user = result.user;
+          console.log(user);
+          checkAndCreateUID(user.uid,user.displayName);
+          navigate("/designer");
+        })
+        .catch((error) => {
+          // Handle Errors here.
+          console.log(error);
+        });
+    };
+  
+    const handleSignOut = () => {
+      signOut(authentication)
+        .then(() => {
+          //   dispatch(logout());
+          navigate("/");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+    
+    //login logout end
+
+
+
   const { scrollYProgress } = useScroll();
 
   const [visible, setVisible] = useState(true);
@@ -66,6 +147,8 @@ export const FloatingNav = ({ navItems, className }) => {
             </Link>
           </Button>
         ))}
+
+        {showLogin?<Button onClick={handleGoogleSignIn}>Login</Button> :<Button onClick={handleSignOut}>Logout</Button>}
         <a href="https://github.com/yashbrid03">
         <IconBrandGithub className="text-white  "/>
         </a>
