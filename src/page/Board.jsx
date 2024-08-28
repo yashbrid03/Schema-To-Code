@@ -385,10 +385,9 @@ const Board = () => {
           />
           <Controls />
           <Panel position="top-left">
-            <button onClick={()=>SaveBoard()}>
-              save
-            </button>
+            <div className="bg-stone-100 rounded-md px-3 py-2  download-btn"> Board : <span className="font-bold">{boardName}</span></div>
           </Panel>
+          
           <Panel position="bottom-right">
             <button
               data-tooltip-target="tooltip"
@@ -400,9 +399,15 @@ const Board = () => {
             </button>
             <button
               onClick={() => callAi()}
-              className=" dark:bg-cyan-700 px-5 py-2 rounded-full dark:text-white text-sm z-20"
+              className=" dark:bg-cyan-700 px-5 py-2 mr-3 rounded-full dark:text-white text-sm z-20"
             >
               Code
+            </button>
+            <button
+              onClick={()=>SaveBoard()}
+              className=" dark:bg-green-700 px-5 py-2 rounded-full dark:text-white text-sm z-20"
+            >
+              Save
             </button>
           </Panel>
           <DownloadChart />

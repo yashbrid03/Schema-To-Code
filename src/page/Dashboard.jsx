@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   getFirestore,
   doc,
@@ -15,6 +15,7 @@ import { clearStoreNode } from "../store/nodeSlice";
 import { useDispatch } from "react-redux";
 import { IconPlus } from "@tabler/icons-react";
 
+
 export const Dashboard = () => {
   // auth
   const dispatch = useDispatch();
@@ -22,6 +23,11 @@ export const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [boardList, setBoardList] = useState([]);
+
+  //table
+
+  // table end
+
   useEffect(() => {
     dispatch(clearStore({}))
     dispatch(clearStoreNode({}))
@@ -148,6 +154,7 @@ export const Dashboard = () => {
   }
   }
 
+
   return (
     <>
     <div className="text-white px-24 pt-20">
@@ -157,8 +164,7 @@ export const Dashboard = () => {
         <IconPlus></IconPlus>
       </button>
 </div>
-     
-      <div className="hello">
+<div className="hello">
       {loading ? (
           <p>Loading...</p>
         ) : boardList.length > 0 ? (
