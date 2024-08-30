@@ -34,9 +34,10 @@ export const Dashboard = () => {
     const unsubscribe = authentication.onAuthStateChanged(
       async (currentUser) => {
         if (currentUser) {
+          await getBoards(currentUser.uid)
           setUser(currentUser);
           setLoading(false);
-          await getBoards(currentUser.uid)
+          
         } else {
           setUser(null);
           setLoading(false);

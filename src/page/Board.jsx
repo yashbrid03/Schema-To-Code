@@ -6,9 +6,8 @@ import {
   applyNodeChanges,
   applyEdgeChanges,
   Panel,
-  
 } from "@xyflow/react";
-import { useReactFlow } from '@xyflow/react';
+import { useReactFlow } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import TableModal from "../component/TableModal";
 import { useState, useCallback, useEffect, useRef } from "react";
@@ -21,13 +20,13 @@ import {
   removeRelation,
   setFieldState,
 } from "../store/tablesSlice";
-import {addNodeToStore} from "../store/nodeSlice"
+import { addNodeToStore } from "../store/nodeSlice";
 import { IconCopy, IconDownload } from "@tabler/icons-react";
 import { DownloadChart } from "../component/DownloadChart";
-import { authentication,db } from "../firebase/config";
+import { authentication, db } from "../firebase/config";
 import { useNavigate } from "react-router-dom";
 import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 import { removeNodeToStore } from "../store/nodeSlice";
 
 const custom = { customNode: CustomNode };
@@ -44,11 +43,11 @@ const Board = () => {
   const data = useSelector((state) => state.data);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [code, setCode] = useState();
-  const [boardName,setBoardName] = useState(null);
+  const [boardName, setBoardName] = useState(null);
   const [nodes, setNodes] = useState([]);
   const [edges, setEdges] = useState([]);
   const location = useLocation();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   // const navigate = useNavigate();
 
   const effectRan = useRef(false);
@@ -57,91 +56,92 @@ const Board = () => {
     // Check if the user navigated from the source page
     if (!location.state || !location.state.fromSourcePage) {
       // Redirect if they didn't
-      navigate('/');
-    }else{
-      setNodes(location.state.nodes)
-      setEdges(location.state.edges)
-      location.state.nodes.map((node)=>{
-        dispatch(addTable({ tableName:node.id }))
-        dispatch(addNodeToStore(node))
-      })
+      navigate("/");
+    } else {
+      setNodes(location.state.nodes);
+      setEdges(location.state.edges);
+      location.state.nodes.map((node) => {
+        dispatch(addTable({ tableName: node.id }));
+        dispatch(addNodeToStore(node));
+      });
 
-      location.state.edges.map((edge)=>{
-        dispatch(addRelation({ source:edge.source, target:edge.target }));
-      })
-      console.log("first")
-      setBoardName(location.state.name)
+      location.state.edges.map((edge) => {
+        dispatch(addRelation({ source: edge.source, target: edge.target }));
+      });
+      console.log("first");
+      setBoardName(location.state.name);
       effectRan.current = true;
     }
-  }, );
+  });
 
   // useEffect(()=>{
   //   console.log(data)
   // },[data])
 
   const reactFlow = useReactFlow();
-  
 
-
-  useEffect(()=>{
-    console.log(reactFlow.getNodes())
-    console.log(data)
-  },[nodes,data])
-
+  useEffect(() => {
+    console.log(reactFlow.getNodes());
+    console.log(data);
+  }, [nodes, data]);
 
   // save board
-  const nodestodb = useSelector((state)=>state.node.nodes)
-  
-  useEffect(()=>{
-    console.log(nodestodb)
-  },[nodestodb])
+  const nodestodb = useSelector((state) => state.node.nodes);
 
-  useEffect(()=>{
-    console.log(nodestodb)
-  })
-  
+  useEffect(() => {
+    console.log(nodestodb);
+  }, [nodestodb]);
+
+  useEffect(() => {
+    console.log(nodestodb);
+  });
+
   // useEffect(()=>{
   //   console.log(state)
   // },[dispatch,state])
 
-  const SaveBoard = async()=>{
-    
+  const SaveBoard = async () => {
     const userRef = doc(db, "users", userget.uid);
     const userDoc = await getDoc(userRef);
     if (userDoc.exists()) {
       const userData = userDoc.data();
       let boards = userData.boards || [];
-  
+
       // Find the index of the board with the given name
-      const boardIndex = boards.findIndex(board => board.name === boardName);
-  
+      const boardIndex = boards.findIndex((board) => board.name === boardName);
+
       if (boardIndex !== -1) {
         // Update the content of the specific board
 
         //update position
         const list2 = reactFlow.getNodes();
-        const updatednodestodb = nodestodb.map(item1 =>{
-          const matchingItem2 = list2.find(item2 => item2.id === item1.id);
+        const updatednodestodb = nodestodb.map((item1) => {
+          const matchingItem2 = list2.find((item2) => item2.id === item1.id);
           if (matchingItem2) {
             return { ...item1, position: matchingItem2.position };
           }
           return item1;
-        })
+        });
         const currentDate = new Date();
-        const formattedDate = `${currentDate.getDate().toString().padStart(2, '0')}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}/${currentDate.getFullYear()}`;
-        console.log(boards[boardIndex].createdAt)
+        const formattedDate = `${currentDate
+          .getDate()
+          .toString()
+          .padStart(2, "0")}/${(currentDate.getMonth() + 1)
+          .toString()
+          .padStart(2, "0")}/${currentDate.getFullYear()}`;
+        console.log(boards[boardIndex].createdAt);
         boards[boardIndex] = {
-          name:boardName,
-          nodes:updatednodestodb,
-          edges : reactFlow.getEdges(),
-          createdAt : boards[boardIndex].createdAt,
-          updatedAt:formattedDate
-           // Spread new content properties to update the board
+          name: boardName,
+          nodes: updatednodestodb,
+          edges: reactFlow.getEdges(),
+          createdAt: boards[boardIndex].createdAt,
+          updatedAt: formattedDate,
+          // Spread new content properties to update the board
         };
-  
+
         // Save the updated boards array back to Firestore
         await updateDoc(userRef, { boards });
-  
+
         alert("Board content updated successfully.");
       } else {
         alert("Board not found.");
@@ -149,42 +149,41 @@ const Board = () => {
     } else {
       alert("User not found.");
     }
-  }
+  };
 
   // save board end
-  
 
   // auth
 
-  const [userget,setUser] = useState(null)
+  const [userget, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const unsubscribe = authentication.onAuthStateChanged(async (currentUser) => {
-            if (currentUser) {
-              setUser(currentUser);
-              console.log(currentUser)
-              setLoading(false); 
-      
-            } else {
-              setUser(null);
-              setLoading(false); 
-            }
-          });
-      
-          return () => unsubscribe();
-    }, []);
+  useEffect(() => {
+    const unsubscribe = authentication.onAuthStateChanged(
+      async (currentUser) => {
+        if (currentUser) {
+          setUser(currentUser);
+          console.log(currentUser);
+          setLoading(false);
+        } else {
+          setUser(null);
+          setLoading(false);
+        }
+      }
+    );
 
-    
-    useEffect(() => {
-        if(!loading && userget === null){
-            alert("you must me logged in")
-            navigate('/')
-        }
-        if(!loading && userget){
-            console.log(userget.uid);
-        }
-    },[userget, loading])
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (!loading && userget === null) {
+      alert("you must me logged in");
+      navigate("/");
+    }
+    if (!loading && userget) {
+      console.log(userget.uid);
+    }
+  }, [userget, loading]);
 
   // auth end
 
@@ -230,8 +229,8 @@ const Board = () => {
     setCode("Your Code is being generated ✨");
     const url =
       "https://api.edenai.run/v2/workflow/49a72acd-97d8-4d79-8e17-b90534775b4f/execution/";
-    console.log("hello : " + JSON.stringify(data));
-    console.log(import.meta.env.VITE_API_TOKEN);
+    // console.log("hello : " + JSON.stringify(data));
+    
     const payload = { Json: JSON.stringify(data) };
 
     try {
@@ -266,7 +265,7 @@ const Board = () => {
 
       const finalresult = await response2.json();
       if (!response2.ok) {
-        console("Network response2 was not ok");
+        console.log("Network response2 was not ok");
       }
 
       const cleanedSql =
@@ -278,29 +277,27 @@ const Board = () => {
     }
   };
 
-  
-
-  
-
   const yPos = useRef(0);
   const addNode = useCallback(
     (tableName) => {
       yPos.current += 80;
       setNodes((nodes) => {
         dispatch(addTable({ tableName }));
-        dispatch(addNodeToStore({
-          id: tableName,
-          type: "customNode",
-          position: { x: 100, y: yPos.current },
-          data: { label: tableName, fields:{} },
-        }));
+        dispatch(
+          addNodeToStore({
+            id: tableName,
+            type: "customNode",
+            position: { x: 100, y: yPos.current },
+            data: { label: tableName, fields: {} },
+          })
+        );
         return [
           ...nodes,
           {
             id: tableName,
             type: "customNode",
             position: { x: 100, y: yPos.current },
-            data: { label: tableName, fields:{} },
+            data: { label: tableName, fields: {} },
           },
         ];
       });
@@ -314,7 +311,7 @@ const Board = () => {
       console.log(currnode[0].id);
       setNodes((nodes) => nodes.filter((node) => node.id !== currnode[0].id));
       dispatch(removeTable(currnode[0].id));
-      dispatch(removeNodeToStore(currnode[0].id))
+      dispatch(removeNodeToStore(currnode[0].id));
     },
     [dispatch]
   );
@@ -362,7 +359,6 @@ const Board = () => {
 
   const onConnect = useCallback((params) => addEdge(params), [addEdge]);
 
-
   return (
     <>
       <div style={{ height: "100vh" }}>
@@ -385,9 +381,12 @@ const Board = () => {
           />
           <Controls />
           <Panel position="top-left">
-            <div className="bg-stone-100 rounded-md px-3 py-2  download-btn"> Board : <span className="font-bold">{boardName}</span></div>
+            <div className="bg-stone-100 rounded-md px-3 py-2  download-btn">
+              {" "}
+              Board : <span className="font-bold">{boardName}</span>
+            </div>
           </Panel>
-          
+
           <Panel position="bottom-right">
             <button
               data-tooltip-target="tooltip"
@@ -404,7 +403,7 @@ const Board = () => {
               Code
             </button>
             <button
-              onClick={()=>SaveBoard()}
+              onClick={() => SaveBoard()}
               className=" dark:bg-green-700 px-5 py-2 rounded-full dark:text-white text-sm z-20"
             >
               Save
@@ -443,9 +442,18 @@ const Board = () => {
           Your MySQL code :
         </div>
         <div className="dark:bg-stone-950 rounded-lg mt-5 pt-14 md:p-10 p-5 relative">
-          {code ? <pre>
-            <code>{code}</code>
-          </pre> : <p>Click on code button to generate SQL code for your diagram</p>}
+          <div className="flex mb-4">
+            <div className="w-3.5 h-3.5 rounded-full  bg-red-600"></div>
+            <div className="w-3.5 h-3.5 ml-2 rounded-full  bg-yellow-600"></div>
+            <div className="w-3.5 h-3.5 ml-2 rounded-full  bg-green-600"></div>
+          </div>
+          {code ? (
+            <pre>
+              <code>{code}</code>
+            </pre>
+          ) : (
+            <p>Click on code button to generate SQL code for your diagram</p>
+          )}
           {/* <p>Click on code button to generate SQL code for your diagram</p>
           <pre>
             <code>{code}</code>

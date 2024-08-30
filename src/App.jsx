@@ -20,11 +20,11 @@ function App() {
       link: "/boards",
       icon: <IconTable className="h-4 w-4 text-neutral-500 dark:text-white" />,
     },
-    // {
-    //   name:"Query",
-    //   link: "/query",
-    //   icon: <IconCode className="h-4 w-4 text-neutral-500 dark:text-white" />,
-    // },
+    {
+      name:"Query",
+      link: "/query",
+      icon: <IconCode className="h-4 w-4 text-neutral-500 dark:text-white" />,
+    },
   ];
 
   return (

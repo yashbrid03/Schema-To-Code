@@ -137,15 +137,17 @@ export const FloatingNav = ({ navItems, className }) => {
       >
         
         {navItems.map((navItem, idx) => (
+          <Link  to={navItem.link} className={cn("")}>
           <Button key={`link=${idx}`}
             borderRadius="1.75rem"
             className="border text-sm font-medium relative border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full"
           >
-            <Link  to={navItem.link} className={cn("")}>
+            
               <span className="block sm:hidden">{navItem.icon}</span>
               <span className="hidden sm:block text-sm">{navItem.name}</span>
-            </Link>
+            
           </Button>
+          </Link>
         ))}
 
         {showLogin?<Button onClick={handleGoogleSignIn}>Login</Button> :<Button onClick={handleSignOut}>Logout</Button>}
